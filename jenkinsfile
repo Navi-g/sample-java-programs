@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/Navi-g/sample-java-programs.git'
+
+                // Run Maven on a Unix agent.
+                sh "mvn clean package"
+            }
+            post {      
+                success {
+                    //junit '**/TEST-*.xml'
+                    archiveArtifacts 'memoryref/target/*.jar'
+                }
+            }
+        }
+    }
+}
