@@ -11,8 +11,13 @@ pipeline {
             }
             post {      
                 success {
+<<<<<<< HEAD
                     //junit '**/TEST-*.xml'
                     archiveArtifacts 'memoryref/target/*.jar'
+=======
+                    junit '**/TEST-*.xml'
+                    archiveArtifacts 'target/*.jar'
+>>>>>>> 9c149727fe22eb1780c5eee6345b015ba0d072af
                 }
             }
         }
