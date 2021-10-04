@@ -29,11 +29,12 @@ pipeline {
 
                     junit '**/TEST-*.xml'
                     archiveArtifacts 'memoryref/target/*.jar'
-                    mail subject : 'Build started with' +env.BUILD_ID to : 'navyakanth@outlook.com', from : 'navi@jenkins.com', body: 'The build started',+env.BUILD_ID 'is Successful'
+                    mail subject: 'Build started with'+env.BUILD_ID to: 'navyakanth@outlook.com', from: 'navi@jenkins.com', body: 'The build started', +env.BUILD_ID 'is Successful'
                      }
                 failure {
                     echo "The Build initiated is Failed !"
-                    mail subject : 'Build started with' +env.BUILD_ID, to : 'navyakanth@outlook.com', from : 'navi@jenkins.com', body: 'The build is Failure'
+                    mail subject: 'Build started with'+env.BUILD_ID, to: 'navyakanth@outlook.com', from: 'navi@jenkins.com', body: 'The build is Failure'
+                    // mail subject: 'BUILD Failed '+env.BUILD_ID+'URL is '+env.BUILD_URL, to: 'devops@nk.com', from: 'jenkins@nk.com', body: 'EMPTY BODY'
 
                 }
                  always {
