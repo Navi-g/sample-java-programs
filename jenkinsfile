@@ -22,7 +22,7 @@ pipeline {
             mail body: 'Build is completed', from: 'navi@outlook.com', replyTo: 'nk@gmail.in', subject: 'BUILD STATUS'+env.BUILD_ID, to: 'navi@jenkins'
         }
         success {
-            archiveArtifacts artifacts: '* */*.war', followSymlinks: false
+            archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false
             junit '**/Test-*.xml'
             mail body: 'Build is completed', from: 'navi@outlook.com', replyTo: 'nk@gmail.in', subject: 'BUILD STATUS'+env.BUILD_ID, to: 'navi@jenkins'
         }
