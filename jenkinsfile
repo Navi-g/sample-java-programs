@@ -1,46 +1,31 @@
 pipeline {
-    agent {label 'UBN'}
-    triggers {
-     // cron('H * * * *')
-        pollSCM('* * * * *')
-    
-        }
-    options { timestamps(1) }
-    parameters {
-        string(name: 'PERSON', defaultValue: 'Jenkins', description: 'Who should I say hello to?')
-        choice(name: 'CHOICE', choices: ['package', 'clean package'], defaultValue: 'clean package', description: 'Pick something')
-        // password(name: 'PASSWORD', defaultValue: 'jen123', description: 'Enter a password')
-        }
+    agent {label 'UBN'} 
+    triggers {cron '* * * * *'}
     stages {
-        stage('Build') {
+        stage('Stage 1-SCM') {
             steps {
-                echo "Hello ${params.PERSON}"
-                // echo "Pick ${params.CHOICE}"
-                // echo "Enter ${params.PASSWORD}"
-                // Get some code from a GitHub repository
-                git branch : 'master', url: 'https://github.com/Navi-g/sample-java-programs.git'
-
-                // Run Maven on a Unix agent.
-                sh "mvn clean package"
-                // choice (name: "STATE", choices: ['sucessful', 'Failure'], description: 'Tells about the state of the build')
-            }
-            post {      
-                success {
-
-                    junit '**/TEST-*.xml'
-                    archiveArtifacts 'memoryref/target/*.jar'
-                    mail subject: 'Build started with'+env.BUILD_ID to: 'navyakanth@outlook.com', from: 'navi@jenkins.com', body: 'The build started', +env.BUILD_ID 'is Successful'
-                     }
-                failure {
-                    echo "The Build initiated is Failed !"
-                    mail subject: 'Build started with'+env.BUILD_ID, to: 'navyakanth@outlook.com', from: 'navi@jenkins.com', body: 'The build is Failure'
-                    // mail subject: 'BUILD Failed '+env.BUILD_ID+'URL is '+env.BUILD_URL, to: 'devops@nk.com', from: 'jenkins@nk.com', body: 'EMPTY BODY'
-
-                }
-                 always {
-       emailext body: "See ${BUILD_URL}", recipientProviders: [requestor(1)], subject: "Jenkins: ${JOB_NAME}: Build status is ${currentBuild.currentResult}"
+                echo 'Hello world!'
+                git branch: '/master', url: 'https://github.com/Navi-g/sample-java-programs.git'
             }
         }
-     }
-    
+        stage('Build') {
+            steps{
+                sh 'mvn clean package'
+            }
+        }
+    post {
+        failure {
+            mail body: 'Build is completed', from: 'navi@outlook.com', replyTo: 'nk@gmail.in', subject: 'BUILD STATUS of'+env.BUILD_ID, to: 'navi@jenkins'
+        }
+        unstable {
+            mail body: 'Build is completed', from: 'navi@outlook.com', replyTo: 'nk@gmail.in', subject: 'BUILD STATUS'+env.BUILD_ID, to: 'navi@jenkins'
+        }
+        success {
+            archiveArtifacts artifacts: '* */*.war', followSymlinks: false
+            junit '**/Test-*.xml'
+            mail body: 'Build is completed', from: 'navi@outlook.com', replyTo: 'nk@gmail.in', subject: 'BUILD STATUS'+env.BUILD_ID, to: 'navi@jenkins'
+        }
+    }
+
+    }
 }
