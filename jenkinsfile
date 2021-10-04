@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent {label 'UBN'}
     triggers {
      // cron('H * * * *')
         pollSCM('* * * * *')
@@ -24,6 +24,7 @@ pipeline {
                 sh "mvn clean package"
                 // choice (name: "STATE", choices: ['sucessful', 'Failure'], description: 'Tells about the state of the build')
             }
+        }
             post {      
                 success {
 
@@ -41,9 +42,8 @@ pipeline {
                 }
                  always {
        emailext body: "See ${BUILD_URL}", recipientProviders: [requestor(1)], subject: "Jenkins: ${JOB_NAME}: Build status is ${currentBuild.currentResult}"
-     }
-   }
             }
         }
-    }
+     }
+    
 }
