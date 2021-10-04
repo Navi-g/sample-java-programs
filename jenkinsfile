@@ -24,20 +24,16 @@ pipeline {
                 sh "mvn clean package"
                 // choice (name: "STATE", choices: ['sucessful', 'Failure'], description: 'Tells about the state of the build')
             }
-        }
             post {      
                 success {
 
                     junit '**/TEST-*.xml'
                     archiveArtifacts 'memoryref/target/*.jar'
-                    mail subject : 'Build started with' +env.BUILD_ID, to 'navyakanth@outlook.com', from 'navi@jenkins.com',
-                    body: 'The build started',+env.BUILD_ID 'is Successful'
-
-                }
+                    mail subject : 'Build started with' +env.BUILD_ID to : 'navyakanth@outlook.com', from : 'navi@jenkins.com', body: 'The build started',+env.BUILD_ID 'is Successful'
+                     }
                 failure {
                     echo "The Build initiated is Failed !"
-                    mail subject : 'Build started with' +env.BUILD_ID, to 'navyakanth@outlook.com', from 'navi@jenkins.com',
-                    body: 'The build is Failure'
+                    mail subject : 'Build started with' +env.BUILD_ID, to : 'navyakanth@outlook.com', from : 'navi@jenkins.com', body: 'The build is Failure'
 
                 }
                  always {
