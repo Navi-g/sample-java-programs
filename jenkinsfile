@@ -5,17 +5,16 @@ pipeline {
         stage('Stage 1-SCM') {
             steps {
                 echo 'Hello world!'
-                git branch: '/master', url: 'https://github.com/Navi-g/sample-java-programs.git'
+                git branch: 'master', url: 'https://github.com/Navi-g/sample-java-programs.git'
             }
         }
         stage('Build') {
             steps{
-                sh 'mvn clean package'
+                sh 'mvn package'
             }
         }
     }
     post {
-        
         failure {
             mail body: 'Build is completed', from: 'navi@outlook.com', replyTo: 'nk@gmail.in', subject: 'BUILD STATUS of'+env.BUILD_ID, to: 'navi@jenkins'
         }
