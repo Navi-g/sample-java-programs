@@ -13,7 +13,9 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+    }
     post {
+        
         failure {
             mail body: 'Build is completed', from: 'navi@outlook.com', replyTo: 'nk@gmail.in', subject: 'BUILD STATUS of'+env.BUILD_ID, to: 'navi@jenkins'
         }
@@ -27,5 +29,5 @@ pipeline {
         }
     }
 
-    }
+
 }
